@@ -36,6 +36,14 @@ public class Localizacao {
         this.id = id;
     }
 
+    public void setIdAreaVerde(int idAreaVerde) {
+        this.idAreaVerde = idAreaVerde;
+    }
+
+    public int getIdAreaVerde() {
+        return idAreaVerde;
+    }
+
     public int getId() {
         return id;
     }

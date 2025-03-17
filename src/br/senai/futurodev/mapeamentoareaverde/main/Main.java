@@ -1,7 +1,9 @@
 package br.senai.futurodev.mapeamentoareaverde.main;
 
+import br.senai.futurodev.mapeamentoareaverde.models.AreaVerde;
 import br.senai.futurodev.mapeamentoareaverde.models.Avaliacao;
 import br.senai.futurodev.mapeamentoareaverde.models.Localizacao;
+import br.senai.futurodev.mapeamentoareaverde.repository.AreaVerdeRepository;
 import br.senai.futurodev.mapeamentoareaverde.repository.AvaliacaoRepository;
 import br.senai.futurodev.mapeamentoareaverde.repository.LocalizacaoRepository;
 
@@ -10,48 +12,97 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        Localizacao loc = new Localizacao();
         Scanner entrada = new Scanner(System.in);
-        LocalizacaoRepository localizacoes = new LocalizacaoRepository();
+        AreaVerdeRepository areasVerdes = new AreaVerdeRepository();
 
-        System.out.println("Digite a latitude: ");
-        String latitude = entrada.nextLine();
-        System.out.println("Digite a longitude: ");
-        String longitude = entrada.nextLine();
+        int opcao = 0;
 
-        loc.setLatitude(latitude);
-        loc.setLongitude(longitude);
-
-
-        localizacoes.salvarLocalizacao(loc);
-        System.out.println("Localização salva com sucesso!");
-        System.out.println("Localização: " + loc.toString());
-       // System.out.println("Localização é: " + localizacoes.buscarLocalizacao(1));
-
-//        Avaliacao avaliacao = new Avaliacao();
-//        AvaliacaoRepository avaliacoes = new AvaliacaoRepository();
-
-//        System.out.println("Digite a nota para a quantidade de árvores: ");
-//        double notaArvores = Double.parseDouble(entrada.nextLine());
-//        System.out.println("Digite a nota para a qualidade do ar: ");
-//        double notaQualidadeAr = Double.parseDouble(entrada.nextLine());
-//        System.out.println("Digite a nota para a coleta de residuos: ");
-//        double notaColetaResiduos = Double.parseDouble(entrada.nextLine());
-//        System.out.println("Digite a nota para a poluicao sonora: ");
-//        double notaPoluicaoSonora = Double.parseDouble(entrada.nextLine());
-//        System.out.println("Digite a nota para o transporte publico: ");
-//        double notaTransportePublico = Double.parseDouble(entrada.nextLine());
-
-//        avaliacao.setQldDoAr(notaQualidadeAr);
-//        avaliacao.setQtdArvores(notaArvores);
-//        avaliacao.setColetaDeResiduos(notaColetaResiduos);
-//        avaliacao.setTransportePublico(notaTransportePublico);
-//        avaliacao.setAusenciaPoluicaoSonora(notaPoluicaoSonora);
-//
-//        System.out.println("Notas registradas com sucesso!");
-//        avaliacoes.salvarAvaliacao(avaliacao);
-//        System.out.println(avaliacao.toString());
-        //System.out.println(avaliacoes.buscarAvaliacao(2));
+        do{
+            System.out.println("Bem-vindo ao Mapeamento de Áreas Verdes! Escolha uma opção para iniciar:");
+            System.out.println("1 - para Listar uma Area Verde");
+            System.out.println("2 - para avaliar uma Area Verde");
+            System.out.println("3 - Ver detalhes de uma Area Verde");
+            System.out.println("4 - Cadastrar nova Área Verde");
+            System.out.println("0 - Sair");
+            opcao = Integer.parseInt(entrada.nextLine());
+            switch (opcao){
+                case 1:
+                    System.out.println("Listando Áreas Verdes...");
+                    for (AreaVerde area : areasVerdes.listarAreasVerdes()) {
+                        System.out.println( " - ID: " + area.getId() + " Nome: " + area.getNome());
+                    }
+                    break;
+                case 2:
+                    System.out.println("Digite o ID da Área Verde que deseja avaliar:");
+                    int id = Integer.parseInt(entrada.nextLine());
+                    AreaVerde areaVerde = new AreaVerde();
+                    if(id == areaVerde.getId()){
+                        AvaliacaoRepository avaliacoes = new AvaliacaoRepository();
+                        Avaliacao avaliacao = new Avaliacao();
+                        System.out.println("Digite uma nota de 1 a 5 para quantidade de árvores:");
+                        avaliacao.setQtdArvores(Double.parseDouble(entrada.nextLine()));
+                        System.out.println("Digite uma nota de 1 a 5 para a qualidade do ar");
+                        avaliacao.setQldDoAr(Double.parseDouble(entrada.nextLine()));
+                        System.out.println("Digite uma nota de 1 a 5 para a para classificar a poluição sonora:");
+                        avaliacao.setAusenciaPoluicaoSonora(Double.parseDouble(entrada.nextLine()));
+                        System.out.println("Digite uma nota de 1 a 5 para a para classificar a coleta de resíduos:");
+                        avaliacao.setColetaDeResiduos(Double.parseDouble(entrada.nextLine()));
+                        System.out.println("Digite uma nota de 1 a 5 para a para classificar a facilidade de acesso:");
+                        avaliacao.setTransportePublico(Double.parseDouble(entrada.nextLine()));
+                        avaliacao.setIdAreaVerde(areaVerde.getId());
+                        avaliacoes.salvarAvaliacao(avaliacao);
+                        areaVerde.setAvaliacao(avaliacao);
+                        System.out.println("Avaliação realizada com sucesso!");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Digite o ID da Área Verde que deseja ver detalhes:");
+                    int idArea = Integer.parseInt(entrada.nextLine());
+                    AreaVerde area = areasVerdes.buscarAreaVerde(idArea);
+                    if (area != null) {
+                        System.out.println(area.toString());
+                    } else {
+                        System.out.println("Área Verde não encontrada!");
+                    }
+                    break;
+                case 4:
+                    System.out.println("Cadastrando nova Área Verde...");
+                    System.out.println("----------------------------------------");
+                    System.out.println("Digite o nome da Área Verde:");
+                    String nome = entrada.nextLine();
+                    System.out.println("Digite o horário de funcionamento:");
+                    String horario = entrada.nextLine();
+                    System.out.println("Digite o tipo de vegetação:");
+                    String vegetacao = entrada.nextLine();
+                    System.out.println("Digite as atividades:");
+                    String atividades = entrada.nextLine();
+                    System.out.println("Digite a latitude:");
+                    String latitude = entrada.nextLine();
+                    System.out.println("Digite a longitude:");
+                    String longitude = entrada.nextLine();
+                    LocalizacaoRepository localizacoes = new LocalizacaoRepository();
+                    Localizacao localizacao = new Localizacao();
+                    localizacao.setLongitude(longitude);
+                    localizacao.setLatitude(latitude);
+                    AreaVerde novaArea = new AreaVerde();
+                    novaArea.setNome(nome);
+                    novaArea.setTipoDeVegetacao(vegetacao);
+                    novaArea.setCoordenadas(localizacao);
+                    novaArea.setAtividades(atividades);
+                    novaArea.setHorarioFuncionamento(horario);
+                    localizacoes.salvarLocalizacao(localizacao);
+                    localizacao.setIdAreaVerde(novaArea.getId());
+                    areasVerdes.salvarAreaVerde(novaArea);
+                    System.out.println("Área Verde cadastrada com sucesso!");
+                    break;
+                case 0:
+                    System.out.println("Obrigado por utilizar o Mapeamento de Áreas Verdes!");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+                    break;
+            }
+        }while(opcao != 0);
 
     }
 }
