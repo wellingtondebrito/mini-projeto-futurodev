@@ -1,5 +1,6 @@
 package br.senai.futurodev.mapeamentoareaverde.models;
 
+
 public class Avaliacao {
     private int id;
     private double qtdArvores;
@@ -25,6 +26,14 @@ public class Avaliacao {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdAreaVerde() {
+        return idAreaVerde;
+    }
+
+    public void setIdAreaVerde(int idAreaVerde) {
+        this.idAreaVerde = idAreaVerde;
     }
 
     public double getQtdArvores() {
