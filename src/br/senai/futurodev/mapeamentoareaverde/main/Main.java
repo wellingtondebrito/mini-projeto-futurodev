@@ -35,7 +35,7 @@ public class Main {
                 case 1:
                     System.out.println("Listando Áreas Verdes...");
                     for (AreaVerde area : areasVerdes.listarAreasVerdes()) {
-                        System.out.println( " - ID: " + area.getId() + " Nome: " + area.getNome());
+                        System.out.println(area.listAreaVerdeString(avaliacoes));
                     }
                     break;
                 case 2:
