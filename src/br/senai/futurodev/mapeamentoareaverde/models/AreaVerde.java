@@ -97,6 +97,19 @@ public class AreaVerde {
         }
         this.mediaGeral = somaDasMedias / totalAvaliacoes;
         return somaDasMedias / totalAvaliacoes;
+
+    }
+
+    public String listAreaVerdeString(AvaliacaoRepository avaliacao){
+        return  "Nome: " + this.nome +
+                "\n--------------------------------------" +
+                "\n 🕧 Horário de Funcionamento: "
+                + this.horarioFuncionamento +
+                "\n--------------------------------------" +
+                "\n 🌳 Tipo de Vegetação: " + this.tipoDeVegetacao +
+                "\n--------------------------------------" +
+                "\n ⭐ Avaliação Geral:  " + calcularMediaGeral(avaliacao)+
+                "\n--------------------------------------";
     }
 
     public String toString(AvaliacaoRepository avaliacao){
