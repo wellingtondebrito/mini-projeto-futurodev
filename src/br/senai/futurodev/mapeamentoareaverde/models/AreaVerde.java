@@ -1,5 +1,8 @@
 package br.senai.futurodev.mapeamentoareaverde.models;
 
+import br.senai.futurodev.mapeamentoareaverde.repository.AreaVerdeRepository;
+import br.senai.futurodev.mapeamentoareaverde.repository.AvaliacaoRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +15,7 @@ public class AreaVerde {
     private String atividades;
     private Localizacao coordenadas;
     private Avaliacao avaliacao;
+    private double mediaGeral;
 
 
     public AreaVerde(String nome, String horarioFuncionamento, String tipoDeVegetacao, String atividades, Localizacao coordenadas) {
@@ -80,7 +84,38 @@ public class AreaVerde {
         return id;
     }
 
-    public String toString(){
-        return "Nome: " + this.nome + "\nHorário de Funcionamento: " + this.horarioFuncionamento + "\nTipo de Vegetação: " + this.tipoDeVegetacao + "\nAtividades: " + this.atividades + "\nCoordenadas: " + this.coordenadas.getLatitude() + this.coordenadas.getLongitude();
+    public double calcularMediaGeral(AvaliacaoRepository avaliacao){
+        double somaDasMedias = 0.0;
+        int totalAvaliacoes = avaliacao.listarAvaiacoes().size();
+
+        for (Avaliacao avaliacaoAtual : avaliacao.listarAvaiacoes()) {
+            somaDasMedias += avaliacaoAtual.CalcularMedia();
+        }
+
+        if(totalAvaliacoes == 0){
+            return 0.0;
+        }
+        this.mediaGeral = somaDasMedias / totalAvaliacoes;
+        return somaDasMedias / totalAvaliacoes;
+    }
+
+    public String toString(AvaliacaoRepository avaliacao){
+        return "Detalhes da Área Verde" +
+                "\n--------------------------------------" +
+                "Nome: " + this.nome +
+                "\n--------------------------------------" +
+                "\n 🕧 Horário de Funcionamento: "
+                + this.horarioFuncionamento +
+                "\n--------------------------------------" +
+                "\n 🌳 Tipo de Vegetação: " + this.tipoDeVegetacao +
+                "\n--------------------------------------" +
+                "\n 🏃‍♂️‍➡️ Atividades: " + this.atividades +
+                "\n--------------------------------------" +
+                "\n 📌 Coordenadas: "
+                +"Latitude: " + this.coordenadas.getLatitude() + " e " +
+                 "Longitude: " + this.coordenadas.getLongitude() +
+                "\n--------------------------------------" +
+                "\n ⭐ Avaliação Geral:  " + calcularMediaGeral(avaliacao)+
+                "\n--------------------------------------";
     }
 }
