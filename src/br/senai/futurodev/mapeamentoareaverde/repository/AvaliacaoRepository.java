@@ -23,4 +23,8 @@ public class AvaliacaoRepository {
         return null;
     }
 
+    public List<Avaliacao> listarAvaiacoes() {
+        return AVALIACOES;
+    }
+
 }
